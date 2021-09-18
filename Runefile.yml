@@ -1,0 +1,77 @@
+version: 1
+image: runicos/base
+
+pipeline:
+  # bin_input:
+  #   capability: RAW
+  #   outputs:
+  #     - type: u8
+  #       dimensions: [400]
+  # extract_tokens:
+  #   proc-block: './byte_input_conversion'
+  #   inputs:
+  #     - bin_input
+  #   outputs:
+  #     - type: i32
+  #       dimensions: [1, 192]
+  #     - type: i32
+  #       dimensions: [1, 192]
+  #     - type: i32
+  #       dimensions: [1, 192]
+  # ----------------------
+  segment_input:
+    capability: RAW
+    outputs:
+      - type: u8
+        dimensions: [1, 192]
+  mask_input:
+    capability: RAW
+    outputs:
+      - type: u8
+        dimensions: [1, 192]
+  token_ids_input:
+    capability: RAW
+    outputs:
+      - type: u8
+        dimensions: [1, 192]
+  segment_cast:
+    proc-block: './byte_input_conversion'
+    inputs:
+      - segment_input
+    outputs:
+      - type: i32
+        dimensions: [1, 192]
+  mask_cast:
+    proc-block: './byte_input_conversion'
+    inputs:
+      - mask_input
+    outputs:
+      - type: i32
+        dimensions: [1, 192]
+  token_ids_cast:
+    proc-block: './byte_input_conversion'
+    inputs:
+      - token_ids_input
+    outputs:
+      - type: i32
+        dimensions: [1, 192]
+  classify:
+    model: './bert.tflite'
+    inputs:
+      # - extract_tokens.0
+      # - extract_tokens.1
+      # - extract_tokens.2
+      - segment_cast
+      - mask_cast
+      - token_ids_cast
+    outputs:
+      - type: f32
+        dimensions: [1, 192]
+      - type: f32
+        dimensions: [1, 192]
+  serial:
+    out: serial
+    inputs:
+      - segment_cast
+      - mask_cast
+      - token_ids_cast
