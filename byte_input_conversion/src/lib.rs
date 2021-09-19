@@ -36,7 +36,7 @@ impl Transform<Tensor<u8>> for ByteInputConversion {
             json.push(*element as char);
         }
 
-        let vec: Vec<i32> = serde_json::from_str(&json).unwrap();
+        let vec: Vec<i32> = serde_json_core::from_str(&json).unwrap();
 
         Tensor::new_vector(vec)
     }
