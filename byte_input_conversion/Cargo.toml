@@ -9,5 +9,5 @@ edition = "2018"
 hotg-rune-core = { git = "https://github.com/hotg-ai/rune", rev = "999c54f4232b65b444c1e29268bfeb12aa24a6cb" }
 hotg-rune-proc-blocks = { git = "https://github.com/hotg-ai/rune", rev = "999c54f4232b65b444c1e29268bfeb12aa24a6cb" }
 log = { version = "0.4", default-features = false }
-serde = { version = "1", features = ["derive"] }
+serde = { version = "1", default-features = false }
 serde_json = "1"
