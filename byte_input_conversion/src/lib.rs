@@ -31,8 +31,9 @@ impl Transform<Tensor<u8>> for ByteInputConversion {
     type Output = Tensor<i32>;
 
     fn transform(&mut self, input: Tensor<u8>) -> Self::Output {
-        let json = str::from_utf8(input.elements()).expect("Error parsing json");
-        let (deserialized, _bytes_read) = serde_json_core::from_str::<Vec<i32>>(json)?;
+        let json = str::from_utf8(input.elements()).expect("Error parsing file");
+        let (deserialized, _bytes_read) =
+            serde_json_core::from_str::<Vec<i32>>(json).expect("Error deserializing json");
 
         Tensor::new_vector(deserialized)
     }
