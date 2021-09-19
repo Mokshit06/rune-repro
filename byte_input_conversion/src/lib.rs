@@ -39,7 +39,7 @@ impl Transform<Tensor<u8>> for ByteInputConversion {
             serde_json_core::from_str::<Vec<i32>>(json.trim_end_matches(char::from(0)))
                 .expect("Error deserializing json");
 
-        Tensor::new_vector(deserialized)
+        Tensor::new_row_major(deserialized.into(), vec![1, 384])
     }
 }
 
