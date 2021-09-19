@@ -2,11 +2,12 @@
 
 extern crate alloc;
 
-#[cfg(test)]
-#[macro_use]
-extern crate std;
+// #[cfg(test)]
+// #[macro_use]
+// extern crate std;
 
 use alloc::{string::String, vec::Vec};
+use core::str;
 pub use hotg_rune_core::{HasOutputs, Tensor};
 use hotg_rune_proc_blocks::{ProcBlock, Transform};
 
@@ -30,15 +31,10 @@ impl Transform<Tensor<u8>> for ByteInputConversion {
     type Output = Tensor<i32>;
 
     fn transform(&mut self, input: Tensor<u8>) -> Self::Output {
-        let mut json = String::new();
+        let json = str::from_utf8(input.elements()).expect("Error parsing json");
+        let (deserialized, _bytes_read) = serde_json_core::from_str::<Vec<i32>>(json)?;
 
-        for element in input.elements() {
-            json.push(*element as char);
-        }
-
-        let vec: Vec<i32> = serde_json_core::from_str(&json).unwrap();
-
-        Tensor::new_vector(vec)
+        Tensor::new_vector(deserialized)
     }
 }
 
