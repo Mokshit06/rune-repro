@@ -6,17 +6,17 @@ pipeline:
     capability: RAW
     outputs:
       - type: u8
-        dimensions: [1, 384]
+        dimensions: [1, 1024]
   mask_input:
     capability: RAW
     outputs:
       - type: u8
-        dimensions: [1, 384]
+        dimensions: [1, 1024]
   token_ids_input:
     capability: RAW
     outputs:
       - type: u8
-        dimensions: [1, 384]
+        dimensions: [1, 1024]
   segment_cast:
     proc-block: './byte_input_conversion'
     inputs:
